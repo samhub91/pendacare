@@ -2,8 +2,6 @@
 
 import { useState } from 'react'
 import Link from 'next/link'
-import { createSupabaseBrowserClient } from '@/lib/supabase/browser'
-import { getPasswordResetRedirectUrl } from '@/lib/auth/siteUrl'
 import { getAuthErrorMessage } from '@/lib/auth/errors'
 import { LogoMark } from '@/components/brand/LogoMark'
 
@@ -19,15 +17,17 @@ export default function ForgotPasswordPage() {
     setLoading(true)
 
     try {
-      const supabase = createSupabaseBrowserClient()
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(email, {
-        redirectTo: getPasswordResetRedirectUrl(),
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email }),
       })
 
-      if (resetError) {
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
         setError(
           getAuthErrorMessage(
-            resetError,
+            data.error ?? 'Failed to send reset email',
             'Failed to send reset email. Check Gmail SMTP in Supabase (app password, port 587) and redirect URLs.'
           )
         )

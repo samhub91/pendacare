@@ -4,7 +4,6 @@ import { Suspense, useState, useEffect } from 'react'
 import { useRouter, useSearchParams } from 'next/navigation'
 import Link from 'next/link'
 import { createSupabaseBrowserClient } from '@/lib/supabase/browser'
-import { getPasswordResetRedirectUrl } from '@/lib/auth/siteUrl'
 import { getAuthErrorMessage } from '@/lib/auth/errors'
 import { LogoMark } from '@/components/brand/LogoMark'
 
@@ -197,15 +196,16 @@ function ResetPasswordContent() {
     setResendStatus(null)
     setResendLoading(true)
     try {
-      const supabase = createSupabaseBrowserClient()
-      const { error: resetError } = await supabase.auth.resetPasswordForEmail(
-        resendEmail,
-        { redirectTo: getPasswordResetRedirectUrl() }
-      )
-      if (resetError) {
+      const res = await fetch('/api/auth/forgot-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: resendEmail }),
+      })
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}))
         setResendStatus(
           getAuthErrorMessage(
-            resetError,
+            data.error ?? 'Failed to send reset email',
             'Failed to send reset email. Check Gmail SMTP in Supabase.'
           )
         )

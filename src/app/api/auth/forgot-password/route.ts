@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
   )
 
   const { error } = await supabase.auth.resetPasswordForEmail(parsed.data.email, {
-    redirectTo: getPasswordResetRedirectUrl(),
+    redirectTo: getPasswordResetRedirectUrl(req),
   })
 
   if (error) {

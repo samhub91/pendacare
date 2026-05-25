@@ -4,9 +4,10 @@ import { NextRequest, NextResponse } from 'next/server'
 import { createServerClient } from '@supabase/ssr'
 import type { CookieOptions } from '@supabase/ssr'
 import { getAuthErrorMessage } from '@/lib/auth/errors'
+import { getSiteUrl } from '@/lib/auth/siteUrl'
 
 function siteOrigin(req: NextRequest): string {
-  return process.env.NEXT_PUBLIC_SITE_URL ?? req.nextUrl.origin
+  return getSiteUrl(req)
 }
 
 export async function GET(req: NextRequest) {
