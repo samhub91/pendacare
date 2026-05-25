@@ -1,0 +1,87 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ── Reset dark-mode interference ── */
+:root {
+  color-scheme: light;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: 'Inter', ui-sans-serif, system-ui, -apple-system, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+body {
+  color: #111827;        /* gray-900 — always dark text */
+  background-color: #f9fafb;
+  min-height: 100vh;
+}
+
+/* ── Inputs always show dark text regardless of OS theme ── */
+input,
+textarea,
+select {
+  color: #111827 !important;
+  background-color: #ffffff !important;
+  -webkit-text-fill-color: #111827 !important;
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #9ca3af !important;          /* gray-400 */
+  -webkit-text-fill-color: #9ca3af !important;
+  opacity: 1;
+}
+
+/* Autofill override — browsers inject blue/yellow backgrounds */
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 40px #ffffff inset !important;
+  -webkit-text-fill-color: #111827 !important;
+  caret-color: #111827;
+}
+
+/* ── Focus ring ── */
+input:focus,
+textarea:focus,
+select:focus {
+  outline: none;
+}
+
+/* ── Scrollbar (subtle) ── */
+::-webkit-scrollbar {
+  width: 6px;
+  height: 6px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #d1d5db;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #9ca3af;
+}
+
+/* Dashboard route transition bar */
+@keyframes dashboard-route-progress {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(350%);
+  }
+}
+
+.dashboard-route-progress-bar {
+  animation: dashboard-route-progress 1.4s ease-in-out infinite;
+}

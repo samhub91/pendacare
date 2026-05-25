@@ -1,0 +1,63 @@
+# Supabase local development configuration
+# See https://supabase.com/docs/guides/cli/config for full reference.
+
+[api]
+# Port for the local Supabase API (PostgREST)
+port = 54321
+# Schemas exposed via the API
+schemas = ["public", "graphql_public"]
+# Extra schemas accessible to the anon and service_role roles
+extra_search_path = ["public", "extensions"]
+# Maximum number of rows returned by a single REST request
+max_rows = 1000
+
+[db]
+# Port for the local PostgreSQL instance
+port = 54322
+# Port for the Supabase database shadow instance (used by migrations)
+shadow_port = 54320
+# PostgreSQL major version
+major_version = 17
+
+[studio]
+# Port for Supabase Studio (local dashboard)
+port = 54323
+# Enable or disable Supabase Studio
+enabled = true
+
+[inbucket]
+# Port for the local email testing server (Inbucket)
+port = 54324
+smtp_port = 54325
+pop3_port = 54326
+
+[storage]
+# File size limit for Supabase Storage uploads (e.g. "50MiB")
+file_size_limit = "50MiB"
+
+[auth]
+# Site URL used for redirect callbacks
+site_url = "http://localhost:3000"
+# Additional redirect URLs allowed during auth flows
+additional_redirect_urls = ["https://localhost:3000"]
+# JWT expiry in seconds (1 hour)
+jwt_expiry = 3600
+# Enable or disable email confirmations for new sign-ups
+enable_signup = true
+
+[auth.email]
+# Enable email-based authentication
+enable_signup = true
+# Require email confirmation before the user can sign in
+double_confirm_changes = true
+enable_confirmations = false
+
+[auth.sms]
+# Disable SMS-based authentication (not required for Pendacare)
+enable_signup = false
+
+[realtime]
+# Port for the local Supabase Realtime server
+enabled = true
+
+
