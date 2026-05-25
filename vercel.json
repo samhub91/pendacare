@@ -2,7 +2,7 @@
   "crons": [
     {
       "path": "/api/cron/lock-reports",
-      "schedule": "0 * * * *"
+      "schedule": "0 0 * * *"
     }
   ],
   "env": {
