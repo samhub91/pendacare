@@ -281,13 +281,13 @@ export function LandingPageClient({ dashboardHref }: LandingPageClientProps) {
           <div className="mt-10 flex justify-center border-b border-gray-100">
             <div className="flex gap-2 sm:gap-6">
               {[
-                { id: 'evv', label: 'Visit Verification (EVV)' },
-                { id: 'mar', label: 'Medication Logs (MAR)' },
-                { id: 'incidents', label: 'Incident Escalation' },
+                { id: 'evv' as const, label: 'Visit Verification (EVV)' },
+                { id: 'mar' as const, label: 'Medication Logs (MAR)' },
+                { id: 'incidents' as const, label: 'Incident Escalation' },
               ].map((tab) => (
                 <button
                   key={tab.id}
-                  onClick={() => setPreviewTab(tab.id as any)}
+                  onClick={() => setPreviewTab(tab.id)}
                   className={`border-b-2 px-3 py-3 text-sm font-semibold transition-all duration-200 ${
                     previewTab === tab.id
                       ? 'border-brand-600 text-brand-700'
