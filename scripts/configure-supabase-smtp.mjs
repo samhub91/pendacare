@@ -53,12 +53,32 @@ function projectRef() {
   process.exit(1)
 }
 
+function appSiteUrl() {
+  return (process.env.NEXT_PUBLIC_SITE_URL ?? 'https://pendacare-fawn.vercel.app').replace(
+    /\/+$/,
+    ''
+  )
+}
+
 async function main() {
   const token = requireEnv('SUPABASE_ACCESS_TOKEN')
   const ref = projectRef()
+  const siteUrl = appSiteUrl()
 
   const body = {
     external_email_enabled: true,
+    site_url: siteUrl,
+    uri_allow_list: [
+      'http://localhost:3000/auth/callback',
+      'http://localhost:3000/reset-password',
+      `${siteUrl}/auth/callback`,
+      `${siteUrl}/reset-password`,
+    ].join(','),
+    mailer_templates_recovery_content:
+      '<h2>Reset your password</h2>\n\n' +
+      '<p>We received a request to reset your password. Follow the link below to choose a new one.</p>\n' +
+      '<p><a href="{{ .RedirectTo }}?token_hash={{ .TokenHash }}&type=recovery">Reset password</a></p>\n\n' +
+      "<p>If you didn't request this, you can safely ignore this email.</p>",
     smtp_admin_email: requireEnv('SMTP_ADMIN_EMAIL'),
     smtp_sender_name: process.env.SMTP_SENDER_NAME ?? 'Pendacare',
     smtp_host: requireEnv('SMTP_HOST'),
@@ -77,6 +97,8 @@ async function main() {
   console.log(`Configuring SMTP for project ${ref}…`)
   console.log(`  Host: ${body.smtp_host}:${body.smtp_port}`)
   console.log(`  From: ${body.smtp_sender_name} <${body.smtp_admin_email}>`)
+  console.log(`  Site URL: ${body.site_url}`)
+  console.log(`  Redirects: ${body.uri_allow_list}`)
 
   const res = await fetch(`https://api.supabase.com/v1/projects/${ref}/config/auth`, {
     method: 'PATCH',
@@ -101,6 +123,7 @@ async function main() {
   }
 
   console.log('Custom SMTP enabled successfully.')
+  console.log('Password reset template now uses RedirectTo + token_hash.')
   console.log(
     'Next: raise limits at https://supabase.com/dashboard/project/' +
       ref +

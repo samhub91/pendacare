@@ -57,7 +57,9 @@ npm run smtp:configure
 1. **Redirect URLs** (if not already set): [Authentication → URL Configuration](https://supabase.com/dashboard/project/ywtucabytahpgxznfcef/auth/url-configuration)
    - `http://localhost:3000/auth/callback`
    - `http://localhost:3000/reset-password`
-   - Your production URLs when you deploy
+   - `https://pendacare-fawn.vercel.app/auth/callback`
+   - `https://pendacare-fawn.vercel.app/reset-password`
+   Set **Site URL** to `https://pendacare-fawn.vercel.app`.
 2. Test: [Forgot password](http://localhost:3000/forgot-password) → open the email link in the **same browser** you used to send it.  
    If you see a PKCE / “code challenge” error, see [password-reset-email.md](./password-reset-email.md).
 3. Optional: customize templates under **Authentication → Email Templates**.
@@ -72,4 +74,5 @@ Any SMTP service works (SendGrid, Brevo, AWS SES, Postmark, etc.). Use their SMT
 |--------|----------------|
 | Rate limit still appears | Wait for the old hourly window to pass; confirm custom SMTP is **saved** and a test shows “custom SMTP enabled” in the dashboard. |
 | Email not received | Resend **Logs**; spam folder; test sender only sends to your Resend account email. |
+| Nothing sends from production | Confirm the Supabase project is not paused and the production `/reset-password` URL is allowed. |
 | Reset link doesn’t work | Redirect URLs; open link in the same browser you used on forgot-password. |
